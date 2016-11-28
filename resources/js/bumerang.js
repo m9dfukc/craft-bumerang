@@ -9,13 +9,19 @@ $(function () {
     }
   }
   function init() {
+    var tabId = "";
     var scrollPos = 0;
     var $form = $('#container');
     var $entryIdInput = $('input[name="entryId"]');
 
     if ($entryIdInput.length > 0 && $form.length > 0) {
+      if(tabId = urlParam("tab")) {
+        $("#"+tabId).trigger("click");
+      }
       if(scrollPos = urlParam("bumerang")) {
-        $(window).scrollTop(scrollPos);
+        setTimeout(function() {
+          $(window).scrollTop(scrollPos)
+        }, 150);
       }
       $(document).unbind('keydown');
       $(document).on('keydown', function(ev) {
@@ -24,7 +30,7 @@ $(function () {
           var redirectUrl = $form.data('saveshortcut-redirect');
           var selectedTab = $('.tabs .tab.sel');
           if (selectedTab.length > 0) {
-            redirectUrl += selectedTab.attr('href') + "&bumerang=" + Garnish.getBodyScrollTop();
+            redirectUrl += "#tab=" + selectedTab.attr('id') + "&bumerang=" + Garnish.getBodyScrollTop();
           } else {
             redirectUrl += "#bumerang=" + Garnish.getBodyScrollTop();
           }
@@ -39,6 +45,6 @@ $(function () {
   if (typeof Garnish == 'undefined') {
     throw 'Garnish not defined!';
   } else {
-    setTimeout(init, 300);
+    setTimeout(init, 50);
   }
 });
